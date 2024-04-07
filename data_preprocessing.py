@@ -5,11 +5,19 @@ from sklearn.preprocessing import StandardScaler
 def load_data(filename):
     return pd.read_csv(filename)
 
+def remove_outliers(df):
+    """Удаление выбросов из данных."""
+    # Идентификация и удаление строк с очевидными выбросами в количестве проданных товаров
+    df = df[(df['item_cnt_day'] > 0) & (df['item_cnt_day'] < df['item_cnt_day'].quantile(0.99))]
+    df = df[df['item_price'] > df['item_price'].quantile(0.01)]  #  исключаем распродажи по очень низкой цене
+    return df
+
 def preprocess_data(df):
     df['date'] = pd.to_datetime(df['date'], dayfirst=True)
     df['month'] = df['date'].dt.month
     df['year'] = df['date'].dt.year
     df['day'] = df['date'].dt.day
+    df = remove_outliers(df)
     # Дополнительная предобработка по необходимости
     return df
 
