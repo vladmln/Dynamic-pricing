@@ -1,11 +1,12 @@
 import torch
+import pandas as pd
 import torch.optim as optim
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from model import PricePredictionModel
 from data_preprocessing import load_data, preprocess_data, split_data, scale_data
 
-def train_model(X_train, y_train, model, criterion, optimizer, epochs=5, batch_size=64):
+def train_model(X_train, y_train, model, criterion, optimizer, epochs=9, batch_size=64):
     dataset = TensorDataset(torch.FloatTensor(X_train), torch.FloatTensor(y_train))
     loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     
@@ -20,6 +21,9 @@ def train_model(X_train, y_train, model, criterion, optimizer, epochs=5, batch_s
 
 if __name__ == "__main__":
     data = load_data('sales_train.csv')
+    data_items = load_data('items.csv')
+    data = pd.merge(data, data_items, on=['item_id'])
+    data = data.drop(columns=['item_name'])
     processed_data = preprocess_data(data)
     X_train, X_test, y_train, y_test = split_data(processed_data)
     X_train_scaled, X_test_scaled = scale_data(X_train, X_test)

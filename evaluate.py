@@ -30,6 +30,9 @@ def evaluate_model(X_test, y_test, model):
 
 if __name__ == "__main__":
     data = load_data('sales_train.csv')
+    data_items = load_data('items.csv')
+    data = pd.merge(data, data_items, on=['item_id'])
+    data = data.drop(columns=['item_name'])
     processed_data = preprocess_data(data)
     X_train, X_test, y_train, y_test = split_data(processed_data)
     X_train_scaled, X_test_scaled = scale_data(X_train, X_test)
