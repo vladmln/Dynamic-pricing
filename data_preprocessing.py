@@ -18,8 +18,6 @@ def preprocess_data(df):
     df['year'] = df['date'].dt.year
     df['day'] = df['date'].dt.day
     df['item_category_id'] = df['item_category_id'] / df['item_category_id'].sum()
-    df['item_id'] = df['item_id'] / df['item_id'].sum()
-    df['shop_id'] = df['shop_id'] / df['shop_id'].sum()
     df = remove_outliers(df)
     # Дополнительная предобработка по необходимости
     return df
