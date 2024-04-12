@@ -12,19 +12,13 @@ def remove_outliers(df):
     # Идентификация и удаление строк с очевидными выбросами в количестве проданных товаров
     df = df[(df['item_cnt_day'] > 0) & (df['item_cnt_day'] < df['item_cnt_day'].quantile(0.99))]
     df = df[df['item_price'] > df['item_price'].quantile(0.01)]  #  исключаем распродажи по очень низкой цене
+    """
     df.sort_values(by='date', inplace=True)
-
-    # Вычисляем скользящее среднее цены для каждого товара за последние 42 дня
     df['rolling_mean_price'] = df.groupby('item_id')['item_price'].transform(lambda x: x.rolling(window=42, min_periods=1).mean())
-
-    # Рассчитываем процентное отклонение цены от скользящего среднего
     df['price_change_pct'] = np.abs(df['item_price'] - df['rolling_mean_price']) / df['rolling_mean_price'] * 100
-
-    # Выбираем строки, где отклонение меньше 5%
     less_than_5_pct_change = df[df['price_change_pct'] < 5]
-
-    # Удаляем выбранные строки из основного DataFrame
     df = df.drop(less_than_5_pct_change.index)
+    """
     return df
 
 def scale_data(X_train, X_test):

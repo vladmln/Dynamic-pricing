@@ -7,7 +7,7 @@ from model import PricePredictionModel
 from data_preprocessing import load_data, preprocess_data, split_data, scale_data
 import numpy as np
 
-def train_model(X_train, y_train, model, criterion, optimizer, epochs=5, batch_size=16):
+def train_model(X_train, y_train, model, criterion, optimizer, epochs=5, batch_size=64):
     # Проверяем, является ли X_train разреженной матрицей и преобразуем её в плотный формат
     if isinstance(X_train, np.ndarray):
         X_train_tensor = torch.FloatTensor(X_train)
