@@ -34,8 +34,6 @@ def preprocess_data(df, train=True, preprocessor=None):
     df['year'] = df['date'].dt.year
     df['day'] = df['date'].dt.day
     df = remove_outliers(df)
-    
-    # Удаление столбца 'date' после извлечения необходимой информации
     df = df.drop(columns=['date'])
     
     numeric_features = [col for col in df.columns if df[col].dtype in ['int64', 'float64'] and col not in ['item_category_id', 'item_cnt_day']]
